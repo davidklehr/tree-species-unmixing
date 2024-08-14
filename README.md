@@ -9,9 +9,9 @@ This Method aims to map sub-pixel tree species mixtures of different tree speice
 
 The workflow is seperated in the following steps:
 
-* Step 1
-* Step 2
-* Step 3
+* Step 1 [ Link ]
+* Step 2 [ Link ]
+* Step 3 [ Link ]
 * Step 4
 * ...
 
