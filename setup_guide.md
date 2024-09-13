@@ -22,20 +22,19 @@ First create a new conda environment if you use anaconda.
     ```
 
 Afterwards install the required packages in your activated environment.
-    ```
+    ```bash
     conda install numpy
     conda install gdal
     conda install rasterio
     conda install tqdm
     conda install tensorflow=2.10.0
     conda install anaconda::joblib
-    
     ```
+
 Now everything should be settled up. 
 
 ### Folder Structure
 During my processing, I used the following fixed folder structure. I recommend you a similar structure.
-
 ```
 /Tree_Species_Unmixing
    ├-/SplineReconstruction
@@ -70,8 +69,8 @@ During my processing, I used the following fixed folder structure. I recommend y
       ├-normalization_params.py
       ├-normalize_fractions_parallel.py
       └-...
-
 ```
+
 The first folder ("SplineReconstruction") contains the feature raster, which is the reconstructed S2 time-series. In principle it can contain any kind of features you want to use for classification. As the reconstruction is performed using FORCE (Link) it is stored in a datacube structure.
 Anyway, the workflow will also work, if the feature raster image is not stored in this structure but in a single .tif raster.
 However, I strongly recommend this structure, because otherwise parallellization in later scripts will have no impact and the processing time will increase.
