@@ -17,7 +17,9 @@ The workflow is seperated in the following steps:
 
 Test
 
-You will find the used python and R scripts (and some documentation) in the according folders.
+You will find the used python and R scripts in the according src folder. And some Documentation in the setup_guide.md.
+I would recommend to start at the setup guide, as i give aou some information about used python libraries, folder structure, etc. here.
+If something is unclear, don't be shy and ask. I give my best to make my workflow as clear as possible.
 
 Feel free to use the code and adapt it to your own projects.
 Just be fair when publishing it to refer to the oroginal work by me:
