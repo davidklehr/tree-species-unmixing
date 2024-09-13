@@ -21,7 +21,7 @@ First create a new conda environment if you use anaconda.
     conda activate Synth_Mix_ANN
     ```
 
-Afterwards install the required packages in your activated environment
+Afterwards install the required packages in your activated environment.
     ```bash
     conda install numpy
     conda install gdal
@@ -82,9 +82,9 @@ The last folder only contains the relevant python scripts and the paramterfile(s
 
 ## Processing
 
-1. Step 1 - rasterize pure training points:
+1. **Step 1** - rasterize pure training points:
     ```bash
-    python *folder_of_processing/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py
+    python *folder_of_processing*/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py
     ```
     In the first step ...
 
