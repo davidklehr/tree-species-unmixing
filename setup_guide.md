@@ -34,20 +34,19 @@ Afterwards install the required packages in your activated environment
 Now everything should be settled up. 
 
 ### Folder Structure
-During my processing, I used a fixed folder structure. I recommend you a similar structure.
+During my processing, I used the following fixed folder structure. I recommend you a similar structure.
 
 ```
 /Tree_Species_Unmixing
    ├-/SplineReconstruction
    │  │ # This Folder contains the FORCE Datacube in its tile structure.
-
    |  ├ X0001_Y0001
    |  ├ X0001_Y0002
    |  ├ ...
    |  ├ X0002_Y0001
    |  ├ X0002_Y0002
    │  └-...
-   ├-/Unmixing
+   ├-/unmixing
    │  ├-/1_rasterized_points
    |  |  └─ ...
    │  ├-/2_pure_data
@@ -73,16 +72,22 @@ During my processing, I used a fixed folder structure. I recommend you a similar
       └-...
 
 ```
-The first folder...
-Anyway, the workflow will also work, if the Time-Series Image is not stored in datacube structure but in a single .tif raster.
+The first folder ("SplineReconstruction") contains the feature raster, which is the reconstructed S2 time-series. In principle it can contain any kind of features you want to use for classification. As the reconstruction is performed using FORCE (Link) it is stored in a datacube structure.
+Anyway, the workflow will also work, if the feature raster image is not stored in this structure but in a single .tif raster.
 However, I strongly recommend this structure, because otherwise parallellization in later scripts will have no impact and the processing time will increase.
+
+The second folder ("unmixing") contains subfolders, where intermediate results of the individual python scripts will be stored.
+
+The last folder only contains the relevant python scripts and the paramterfile(s), for easy comannd line commands.
 
 ## Processing
 
-1. Schritt 1 ausführen:
+1. Step 1 - rasterize pure training points:
     ```bash
-    python src/step_1.py --input "input_datei.csv"
+    python *folder_of_processing/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py
     ```
+    In the first step ...
+
 2. Schritt 2:
     ```bash
     python src/step_2.py --input "output_schritt_1.csv"
