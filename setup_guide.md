@@ -14,7 +14,6 @@ I would recommend this, but of course you are free to manage the used package ve
 
 ### Python environment
 
-3. Install python packages:
 First create a new conda environment if you use anaconda.
     ```
     conda create --name Synth_Mix_ANN python=3.9
