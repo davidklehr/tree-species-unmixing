@@ -22,7 +22,7 @@ First create a new conda environment if you use anaconda.
     ```
 
 Afterwards install the required packages in your activated environment.
-    ```bash
+    ```
     conda install numpy
     conda install gdal
     conda install rasterio
