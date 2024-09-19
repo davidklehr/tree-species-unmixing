@@ -14,11 +14,10 @@ I would recommend this, but of course you are free to manage the used package ve
 
 ### Python environment
 
-First create a new conda environment if you use anaconda.
-    ```
-    conda create --name Synth_Mix_ANN python=3.9
-    conda activate Synth_Mix_ANN
-    ```
+First create a new conda environment if you use anaconda.\
+    ```conda create --name Synth_Mix_ANN python=3.9 ``` \
+    ``` conda activate Synth_Mix_ANN ```
+\
 
 Afterwards install the required packages in your activated environment.
     ```
