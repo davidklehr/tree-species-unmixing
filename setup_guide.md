@@ -85,13 +85,18 @@ If you used FORCE (TSA-module) for preprocessing your satellite data, they are s
 Otherwise it might be necessary to adapt the scripts a little.
 
 **Step 1** - Building your spectral library:\
+\
     The first step actually start with the necessary information of locations of pure tree species pixel. It is of utmost importance to use only high-quality pixels with no clue of intermixing with other species.
     You can store the data in a vectordata format of you choise (recommended .shp or .gpkg) with one column referring to the tree species (e.g. 1 = beech; 2 = oak; ...)
     \
     Adapt all folderfiles and parameters in the parameter file (params.py - lines 1 to 56 for script one, two, and three). Afterwards you can run script one to three.\
 ```bash
     python *folder_of_processing*/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py
+```
+```bash
     python *folder_of_processing*/Tree_Species_Unmixing/python/2_avg_extract_spectral.py
+```
+```bash
     python *folder_of_processing*/Tree_Species_Unmixing/python/3_avg_synthetic_mixing.py
 ```
 \
@@ -100,6 +105,7 @@ Otherwise it might be necessary to adapt the scripts a little.
     If you perform an ensamble approach, you will create an individual library for every model you will train in the next step.
 
 **Step 2** - Train the Neural Network:\
+\
     ```bash
     python src/step_2.py --input "output_schritt_1.csv"
     ```
