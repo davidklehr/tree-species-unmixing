@@ -99,7 +99,7 @@ Otherwise it might be necessary to adapt the scripts a little.
     Afterwards you start a randomized synthatical mixing of the pure endmembers (in relation complexity of your choice) and store this new artifical time series and the according pure species fractions (in the created folder '3_mixed_data').
     If you perform an ensamble approach, you will create an individual library for every model you will train in the next step.
 
-Schritt 2:
+**Step 2** - Train the Neural Network:\
     ```bash
     python src/step_2.py --input "output_schritt_1.csv"
     ```
