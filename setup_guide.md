@@ -1,15 +1,13 @@
 ## Setup Workspace
 ### Installation
 
-1. Clone this repository
-    ```bash
-    git clone https://github.com/davidklehr/tree-species-unmixing.git
-    ```
+1. Clone this repository \
+    ``` git clone https://github.com/davidklehr/tree-species-unmixing.git ```
+\
 
 2. Install python and anaconda(not necessary, but recommended)
 
-I have managed my python version and the used python packages in requirements.txt using anaconda.
-<a href="./requirements.txt" >Test</a>
+I have managed my python version and the used python packages in <a href="./requirements.txt" >requirements.txt</a> using anaconda.
 I would recommend this, but of course you are free to manage the used package versions yourself.
 
 ### Python environment
@@ -19,15 +17,13 @@ First create a new conda environment if you use anaconda.\
     ``` conda activate Synth_Mix_ANN ```
 \
 
-Afterwards install the required packages in your activated environment.
-    ```
-    conda install numpy
-    conda install gdal
-    conda install rasterio
-    conda install tqdm
-    conda install tensorflow=2.10.0
-    conda install anaconda::joblib
-    ```
+Afterwards install the required packages in your activated environment. \
+    ``` conda install numpy ``` \
+    ``` conda install gdal ``` \
+    ``` conda install rasterio ``` \
+    ``` conda install tqdm ``` \
+    ``` conda install tensorflow=2.10.0 ``` \
+    ```conda install anaconda::joblib``` \
 
 Now everything should be settled up. 
 
