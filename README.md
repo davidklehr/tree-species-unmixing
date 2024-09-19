@@ -8,11 +8,11 @@ Monitoring and mapping forest stands, along with accurate and current data on fo
 This Method aims to map sub-pixel tree species mixtures of different tree speices in heavily mixed and strongly fragmented temperate forests like in Germany.
 
 The workflow is seperated in the following steps:
-
-* Step 1: Generation of a dense Sentienl-2 time series.
+* Step 1: Get yout time series data
+** Step 1: Generation of a dense Sentienl-2 time series.\
           In our approach, we used an forest specific spline interpolation method. The corresponding R-code can be found here [<a href="https://github.com/davidfrantz/force-udf/tree/main/rstats/ts" >https://github.com/davidfrantz/force-udf/tree/main/rstats/ts</a>]. However in theory alternative interpolation methods can be used (RBF, linear), just ensure some serious denseness and observations in phenological important months (spring for budbust, fall for leaf decay).
-* Step 2: (optional but recommended) Data cubing.
-As descibed in our publication we used FORCE(<a href="https://github.com/davidfrantz/force" >https://github.com/davidfrantz/force</a>) for data preprocessing. We recommend to do the same as it is a performant alternative for large data amount and developed for satelite processing of Sentinel-2 and Landsat. The data cubing is not entirely necessary, but will increase the processing speed by far using parallelization.
+** Step 2: (optional but recommended) Data cubing.\
+As descibed in our publication we used FORCE (<a href="https://github.com/davidfrantz/force" >https://github.com/davidfrantz/force</a>) for data preprocessing. We recommend to do the same as it is a performant alternative for large data amount and developed for satelite processing of Sentinel-2 and Landsat. The data cubing is not entirely necessary, but will increase the processing speed by far using parallelization.
 * Step 3 [ Link ]
 * Step 4
 * ...
