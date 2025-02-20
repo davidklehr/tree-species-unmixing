@@ -3,7 +3,7 @@
 
 1. Clone this repository \
     ``` git clone https://github.com/davidklehr/tree-species-unmixing.git ```
-\
+    
 
 2. Install python and anaconda(not necessary, but recommended)
 
@@ -15,7 +15,7 @@ I would recommend this, but of course you are free to manage the used package ve
 First create a new conda environment if you use anaconda.\
     ```conda create --name Synth_Mix_ANN python=3.9 ``` \
     ``` conda activate Synth_Mix_ANN ```
-\
+
 
 Afterwards install the required packages in your activated environment. \
     ``` conda install numpy ``` \
@@ -85,15 +85,9 @@ Otherwise it might be necessary to adapt the scripts a little.
     You can store the data in a vectordata format of you choise (recommended .shp or .gpkg) with one column referring to the tree species (e.g. 1 = beech; 2 = oak; ...)
     \
     Adapt all folderfiles and parameters in the parameter file (params.py - lines 1 to 56 for script one, two, and three). Afterwards you can run script one to three.
-```bash
-    python *folder_of_processing*/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py
-```
-```bash
-    python *folder_of_processing*/Tree_Species_Unmixing/python/2_avg_extract_spectral.py
-```
-```bash
-    python *folder_of_processing*/Tree_Species_Unmixing/python/3_avg_synthetic_mixing.py
-```
+    ``` python *folder_of_processing*/Tree_Species_Unmixing/python/1_avg_rasterize_pure_points.py``` \ 
+    ``` python *folder_of_processing*/Tree_Species_Unmixing/python/2_avg_extract_spectral.py ``` \
+    ``` python *folder_of_processing*/Tree_Species_Unmixing/python/3_avg_synthetic_mixing.py ``` \
 \
     With this three skripts you extract the spectral time series information at the points of your selected pure tree species pixels (script one and two).
     Afterwards you start a randomized synthatical mixing of the pure endmembers (in relation complexity of your choice) and store this new artifical time series and the according pure species fractions (in the created folder '3_mixed_data').
