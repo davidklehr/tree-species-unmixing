@@ -8,7 +8,7 @@ import os
 from params_2021_thermal_time import params
 import argparse
 
-
+# just some comment
 bands = ['BLU', 'GRN', 'RED', 'RE1', 'RE2', 'RE3', 'BNIR', 'NIR', 'SW1', 'SW2']
 vrt_paths = {
     band: f"./INTERNAL/spline/5day_interval/thermal/mosaic/stack_{band}.vrt"
