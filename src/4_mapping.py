@@ -30,13 +30,11 @@ import tensorflow as tf
 import numpy as np
 from osgeo import gdal
 import rasterio
-from tqdm import tqdm
-from joblib import Parallel, delayed
 import ast
 import argparse
 from datetime import datetime
 from keras.saving import register_keras_serializable
-from joblib import parallel_backend
+from joblib import Parallel, parallel_backend, delayed
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/ThermalTime_Spline" )
