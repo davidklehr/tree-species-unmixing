@@ -1,3 +1,4 @@
+#! /home/ahsoka/klehr/anaconda3/envs/Synth_Mix/bin python3
 import geopandas as gpd
 import rasterio
 from rasterio.vrt import WarpedVRT
@@ -8,26 +9,27 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dc_folder", help="path to the spline data-cube", default="/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal")
-parser.add_argument("--training_points", help="path to the file of the training points geopackage", default="/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
-
+parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal" )
+parser.add_argument("--training_points", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
+parser.add_argument("--output_folder", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/02_scripts/Synth_Mix/visualization/thermal")
 args = parser.parse_args()
 
-# just some comment
+
 bands = ['BLU', 'GRN', 'RED', 'RE1', 'RE2', 'RE3', 'BNIR', 'NIR', 'SW1', 'SW2']
 vrt_paths = {
     band: os.path.join(args.dc_folder, f"mosaic/stack_{band}.vrt")
     for band in bands
 }
     
-# 1. Lade Punkte
+# 1. load point data
+print(args.training_points)
 gdf = gpd.read_file(args.training_points)
 gdf = gdf.to_crs("EPSG:3035")
 
 arr_x = []
 arr_y = []
 
-# 2. Öffne alle vrts einmal
+# 2. opan all vrts
 datasets = {band: rasterio.open(path) for band, path in vrt_paths.items()}
 n_layers = datasets[bands[0]].count
 
@@ -53,23 +55,12 @@ for _, row in tqdm(gdf.iterrows(), total=len(gdf), desc="Processing samples"):
     sample_array = np.stack(point_data, axis=-1) # becomes an array [28,10]
     arr_x.append(sample_array)
     arr_y.append(spec)
-    # 3. Speichern
+    # 3. save (iteration-wise)
     arr_x_out = np.array(arr_x)
     arr_y_out = np.array(arr_y)
-    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr2.npy"), arr_x_out)
-    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr2.npy"), arr_y_out)
+    np.save(os.path.join(args.output_folder, "x_arr2.npy"), arr_x_out)
+    np.save(os.path.join(args.output_folder, "y_arr2.npy"), arr_y_out)
 
-# Schließe Raster-Dateien
+# close Raster-data
 for ds in datasets.values():
     ds.close()
-
-# 3. Speichern
-arr_x = np.array(arr_x)
-arr_y = np.array(arr_y)
-print(arr_x.shape)
-print(arr_x[173,:,0])
-print(arr_x[173,:,2])
-print(arr_x[173,:,7])
-print(arr_y.shape)
-np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr2.npy"), arr_x)
-np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr2.npy"), arr_y)
