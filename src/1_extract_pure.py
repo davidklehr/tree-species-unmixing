@@ -5,18 +5,23 @@ from rasterio.windows import Window
 import numpy as np
 from tqdm import tqdm
 import os
-from params_2021_thermal_time import params
 import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("dc_folder", help="path to the spline data-cube", default="/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal")
+parser.add_argument("training_points", help="path to the file of the training points geopackage", default="/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
+
+args = parser.parse_args()
 
 # just some comment
 bands = ['BLU', 'GRN', 'RED', 'RE1', 'RE2', 'RE3', 'BNIR', 'NIR', 'SW1', 'SW2']
 vrt_paths = {
-    band: f"./INTERNAL/spline/5day_interval/thermal/mosaic/stack_{band}.vrt"
+    band: os.path.join(args.dc_folder, f"mosaic/stack_{band}.vrt")
     for band in bands
 }
     
 # 1. Lade Punkte
-gdf = gpd.read_file("./INTERNAL/BWI4/all_trainings_points.gpkg")
+gdf = gpd.read_file(args.training_points)
 gdf = gdf.to_crs("EPSG:3035")
 
 arr_x = []
@@ -51,8 +56,8 @@ for _, row in tqdm(gdf.iterrows(), total=len(gdf), desc="Processing samples"):
     # 3. Speichern
     arr_x_out = np.array(arr_x)
     arr_y_out = np.array(arr_y)
-    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr.npy"), arr_x_out)
-    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr.npy"), arr_y_out)
+    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr2.npy"), arr_x_out)
+    np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr2.npy"), arr_y_out)
 
 # Schließe Raster-Dateien
 for ds in datasets.values():
@@ -66,5 +71,5 @@ print(arr_x[173,:,0])
 print(arr_x[173,:,2])
 print(arr_x[173,:,7])
 print(arr_y.shape)
-np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr.npy"), arr_x)
-np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr.npy"), arr_y)
+np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "x_arr2.npy"), arr_x)
+np.save(os.path.join('./02_scripts/Synth_Mix/visualization/thermal', "y_arr2.npy"), arr_y)
