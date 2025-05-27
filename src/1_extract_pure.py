@@ -8,8 +8,8 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("dc_folder", help="path to the spline data-cube", default="/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal")
-parser.add_argument("training_points", help="path to the file of the training points geopackage", default="/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
+parser.add_argument("--dc_folder", help="path to the spline data-cube", default="/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal")
+parser.add_argument("--training_points", help="path to the file of the training points geopackage", default="/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
 
 args = parser.parse_args()
 
