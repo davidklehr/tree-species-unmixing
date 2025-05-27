@@ -1,7 +1,6 @@
 #! /home/ahsoka/klehr/anaconda3/envs/Synth_Mix/bin python3
 import geopandas as gpd
 import rasterio
-from rasterio.vrt import WarpedVRT
 from rasterio.windows import Window
 import numpy as np
 from tqdm import tqdm
