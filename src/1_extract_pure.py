@@ -6,6 +6,7 @@ import numpy as np
 from tqdm import tqdm
 import os
 from params_2021_thermal_time import params
+import argparse
 
 
 bands = ['BLU', 'GRN', 'RED', 'RE1', 'RE2', 'RE3', 'BNIR', 'NIR', 'SW1', 'SW2']
