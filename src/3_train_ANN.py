@@ -1,4 +1,5 @@
 import tensorflow as tf
+from keras.saving import register_keras_serializable
 import numpy as np
 from tqdm import tqdm
 import random
@@ -8,7 +9,7 @@ import ast
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--working_directory", help="path to the pure data numpy array", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
-parser.add_argument("--num_models", help="number of models you want to create", default= 2)
+parser.add_argument("--num_models", help="number of models you want to create", default= 5)
 parser.add_argument("--year", help="year of synthetic mixture", default= '2021')
 parser.add_argument("--tree_labels", help="labels of the tree species/classes in the correct order", default = "['Fichte','Kiefer','Tanne','Douglasie','Larche','Buche','Eiche','Ahorn','Birke','Erle','Pappel','Weide', 'Ground', 'Shadow']")
 parser.add_argument("--num_hidden_layer", help="number of hidden layer", default= 5)
@@ -18,17 +19,18 @@ parser.add_argument("--batch_size", help="the batch size for training", default 
 parser.add_argument("--epochs", help="number of epochs", default = 5)
 args = parser.parse_args()
 
+#------------------------------ added --------------------------------
+@register_keras_serializable(package="Custom")
+class SumToOneLayer(tf.keras.layers.Layer):
+    def call(self, inputs):
+        return inputs / tf.reduce_sum(inputs, axis=-1, keepdims=True)
+#---------------------------------------------------------------------
+
 def train(model_number):
     
     def norm(a):
         a_out = a/10000.
         return a_out
-    
-    #------------------------------ added --------------------------------
-    class SumToOneLayer(tf.keras.layers.Layer):
-        def call(self, inputs):
-            return inputs / tf.reduce_sum(inputs, axis=-1, keepdims=True)
-    #---------------------------------------------------------------------
     
     def get_model(input_shape, lc_num, hidden_layer_num, hidden_layer_node):
         def dense(x, filter_size):
@@ -37,7 +39,7 @@ def train(model_number):
         x_in = tf.keras.Input(shape=input_shape)
         x = tf.keras.layers.Flatten()(x_in)
         for _ in range(hidden_layer_num):
-            #x = tf.nn.relu(dense(x, hidden_layer_node))
+            #x = tf.nn.relu(dense(x, hidden_layer_node)) # this is an "old" tensorflow version call
             x = tf.keras.layers.ReLU()(dense(x, hidden_layer_node))
         x_out = dense(x, lc_num)
         # with sum to one condition
@@ -88,10 +90,10 @@ def train(model_number):
     epochs = int(args.epochs)
     random.shuffle(train_index)
 
-    if not os.path.exists( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number))):
-        os.makedirs( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number)))
+    if not os.path.exists( os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number))):
+        os.makedirs( os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number)))
 
-    with open(os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number),'performance.txt'), 'w') as file:
+    with open(os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number),'performance.txt'), 'w') as file:
         file.write(f"'Epoch'; 'MAE' \n")
 
     for e in range(epochs):
@@ -106,13 +108,13 @@ def train(model_number):
         
         print('Epoch: ', e)
         print('MAE: ', loss_train)
-        with open(os.path.join(args.working_directory, '3_trained_model','version' + str(model_number),'performance.txt'), 'a') as file:
+        with open(os.path.join(args.working_directory, '3_trained_model_test','version' + str(model_number),'performance.txt'), 'a') as file:
             file.write(f"{e};{loss_train}\n")
         random.shuffle(train_index)
         #lr *= params['LEARNING_RATE_DECAY']
         opt.learning_raye = lr
 
-    model_path = os.path.join(args.working_directory, '3_trained_model','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
+    model_path = os.path.join(args.working_directory, '3_trained_model_test','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
     tf.keras.models.save_model(model, model_path)
     print('Model is saved at ', model_path)
 
