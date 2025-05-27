@@ -10,7 +10,8 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal" )
 parser.add_argument("--training_points", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
-parser.add_argument("--output_folder", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/02_scripts/Synth_Mix/visualization/thermal")
+parser.add_argument("--year", help="path to the file of the training points geopackage", default= 2021)
+parser.add_argument("--working_directory", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
 args = parser.parse_args()
 
 
@@ -57,8 +58,8 @@ for _, row in tqdm(gdf.iterrows(), total=len(gdf), desc="Processing samples"):
     # 3. save (iteration-wise)
     arr_x_out = np.array(arr_x)
     arr_y_out = np.array(arr_y)
-    np.save(os.path.join(args.output_folder, "x_arr2.npy"), arr_x_out)
-    np.save(os.path.join(args.output_folder, "y_arr2.npy"), arr_y_out)
+    np.save(os.path.join(args.working_directory, '1_pure' , f"x_{str(args.year)}.npy"), arr_x_out)
+    np.save(os.path.join(args.working_directory, '1_pure' , f"y_{str(args.year)}.npy"), arr_y_out)
 
 # close Raster-data
 for ds in datasets.values():
