@@ -20,6 +20,9 @@ vrt_paths = {
     band: os.path.join(args.dc_folder, f"mosaic/stack_{band}.vrt")
     for band in bands
 }
+
+if not os.path.exists( os.path.join(args.working_directory, '1_pure')):
+    os.makedirs(os.path.join(args.working_directory, '1_pure'))
     
 # 1. load point data
 print(args.training_points)

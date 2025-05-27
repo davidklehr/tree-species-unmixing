@@ -6,7 +6,7 @@ import argparse
 import ast
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--working_directoy", help="path to the pure data numpy array", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
+parser.add_argument("--working_directory", help="path to the pure data numpy array", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
 parser.add_argument("--year", help="year of synthetic mixture", default= 2021)
 parser.add_argument("--num_libs", help="number of synthtic libraries to create", default= 10)
 parser.add_argument("--lib_size", help="number of synthtic libraries to create", default= 256000)
@@ -20,8 +20,8 @@ args = parser.parse_args()
 def mixing(year,model_number):
     print(year)
     print('version ' + str(model_number))
-    x_pure_path = os.path.join(args.working_directoy, '01_pure' ,f'x_{year}.npy')
-    y_pure_path = os.path.join(args.working_directoy, '01_pure' , f'y_{year}.npy')
+    x_pure_path = os.path.join(args.working_directory, '1_pure' ,f'x_{year}.npy')
+    y_pure_path = os.path.join(args.working_directory, '1_pure' , f'y_{year}.npy')
     x_pure = np.load(x_pure_path)
     x_pure = x_pure.astype(np.float32)
     y_pure = np.load(y_pure_path)
@@ -45,10 +45,10 @@ def mixing(year,model_number):
         y_mixed.append(y)
     x_mixed = np.array(x_mixed, np.float32)
     y_mixed = np.array(y_mixed, np.float32)
-    if not os.path.exists(os.path.join(args.working_directoy, '2_mixed_data' ,'version' +str(model_number))):
-            os.makedirs(os.path.join(args.working_directoy, '2_mixed_data','version' +str(model_number)))
-    x_mixed_out_path = os.path.join(args.working_directoy, '2_mixed_data','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
-    y_mixed_out_path = os.path.join(args.working_directoy, '2_mixed_data','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
+    if not os.path.exists(os.path.join(args.working_directory, '2_mixed_data' ,'version' +str(model_number))):
+        os.makedirs(os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number)))
+    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
+    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
     print(x_mixed_out_path)
     np.save(x_mixed_out_path, arr=x_mixed)
     np.save(y_mixed_out_path, arr=y_mixed)

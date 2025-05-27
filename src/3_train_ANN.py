@@ -7,18 +7,15 @@ import argparse
 import ast
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--working_directoy", help="path to the pure data numpy array", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
+parser.add_argument("--working_directory", help="path to the pure data numpy array", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
 parser.add_argument("--num_models", help="number of models you want to create", default= 2)
 parser.add_argument("--year", help="year of synthetic mixture", default= '2021')
 parser.add_argument("--tree_labels", help="labels of the tree species/classes in the correct order", default = "['Fichte','Kiefer','Tanne','Douglasie','Larche','Buche','Eiche','Ahorn','Birke','Erle','Pappel','Weide', 'Ground', 'Shadow']")
-
 parser.add_argument("--num_hidden_layer", help="number of hidden layer", default= 5)
 parser.add_argument("--hidden_layer_nodes", help="number of nodes per hidden layer", default = 128)
 parser.add_argument("--learning_rate", help="learning_rate for training", default = 1e-3)
 parser.add_argument("--batch_size", help="the batch size for training", default = 256)
 parser.add_argument("--epochs", help="number of epochs", default = 5)
-
-
 args = parser.parse_args()
 
 def train(model_number):
@@ -29,8 +26,8 @@ def train(model_number):
     
     #------------------------------ added --------------------------------
     class SumToOneLayer(tf.keras.layers.Layer):
-            def call(self, inputs):
-                return inputs / tf.reduce_sum(inputs, axis=-1, keepdims=True)
+        def call(self, inputs):
+            return inputs / tf.reduce_sum(inputs, axis=-1, keepdims=True)
     #---------------------------------------------------------------------
     
     def get_model(input_shape, lc_num, hidden_layer_num, hidden_layer_node):
@@ -66,8 +63,8 @@ def train(model_number):
     y_train = []
     # load the synthetic mixed data
     print("trained model " + str(model_number))
-    x_mixed_out_path = os.path.join(args.working_directoy, '2_mixed_data','version' +str(model_number) , 'x_mixed_' + str(args.year) + '.npy')
-    y_mixed_out_path = os.path.join(args.working_directoy, '2_mixed_data','version' +str(model_number) , 'y_mixed_' + str(args.year) + '.npy')
+    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number) , 'x_mixed_' + str(args.year) + '.npy')
+    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number) , 'y_mixed_' + str(args.year) + '.npy')
     x_train.append(np.load(x_mixed_out_path))
     y_train.append(np.load(y_mixed_out_path))
     # prepare synthetic mixed data
@@ -91,10 +88,10 @@ def train(model_number):
     epochs = int(args.epochs)
     random.shuffle(train_index)
 
-    if not os.path.exists( os.path.join(args.working_directoy, '3_trained_model_test' ,'version' +str(model_number))):
-        os.makedirs( os.path.join(args.working_directoy, '3_trained_model_test' ,'version' +str(model_number)))
+    if not os.path.exists( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number))):
+        os.makedirs( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number)))
 
-    with open(os.path.join(args.working_directoy, '3_trained_model_test' ,'version' +str(model_number),'performance.txt'), 'w') as file:
+    with open(os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number),'performance.txt'), 'w') as file:
         file.write(f"'Epoch'; 'MAE' \n")
 
     for e in range(epochs):
@@ -109,16 +106,16 @@ def train(model_number):
         
         print('Epoch: ', e)
         print('MAE: ', loss_train)
-        with open(os.path.join(args.working_directoy, '3_trained_model_test','version' + str(model_number),'performance.txt'), 'a') as file:
+        with open(os.path.join(args.working_directory, '3_trained_model','version' + str(model_number),'performance.txt'), 'a') as file:
             file.write(f"{e};{loss_train}\n")
         random.shuffle(train_index)
         #lr *= params['LEARNING_RATE_DECAY']
         opt.learning_raye = lr
 
-    model_path = os.path.join(args.working_directoy, '3_trained_model_test','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
+    model_path = os.path.join(args.working_directory, '3_trained_model','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
     tf.keras.models.save_model(model, model_path)
     print('Model is saved at ', model_path)
 
 if __name__ == '__main__':
     for i in range(int(args.num_models)):
-        train(i+1+2)
+        train(i+1)
