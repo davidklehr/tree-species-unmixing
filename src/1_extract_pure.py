@@ -8,7 +8,7 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/spline/5day_interval/thermal" )
+parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/spline/thermal_time_training_points" )
 parser.add_argument("--training_points", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
 parser.add_argument("--year", help="path to the file of the training points geopackage", default= 2021)
 parser.add_argument("--working_directory", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
@@ -32,10 +32,6 @@ def extract_points(tile):
     gdf = gpd.read_file(args.training_points)
     gdf = gdf.to_crs("EPSG:3035")
 
-    # 2. opan all vrts
-    datasets = {band: rasterio.open(path) for band, path in vrt_paths.items()}
-    n_layers = datasets[bands[0]].count
-
     #for fid, row in tqdm(gdf.iterrows(), total=len(gdf), desc="Processing samples"):
     for fid, row in gdf.iterrows():
         # iterate over every data point:
@@ -54,7 +50,7 @@ def extract_points(tile):
                     values.append(v)
                 values = np.array(values) # dimension [,28]
             except Exception:
-                values = np.full(n_layers, np.nan)
+                values = np.full(len(all_dates), np.nan)
             point_data.append(values) # append all bands
         sample_array = np.stack(point_data, axis=-1) # becomes an array [28,10]
         if not np.isnan(sample_array).all():
@@ -68,4 +64,8 @@ def extract_points(tile):
             data_at_date.close()
 
 if __name__ == '__main__':
+    if not os.path.exists(os.path.join(args.working_directory, '1_pure', f'samples_x{str(args.year)}')):
+        os.makedirs(os.path.join(args.working_directory, '1_pure', f'samples_x{str(args.year)}'))
+    if not os.path.exists(os.path.join(args.working_directory, '1_pure', f'samples_y{str(args.year)}')):
+        os.makedirs(os.path.join(args.working_directory, '1_pure', f'samples_y{str(args.year)}'))
     extract_points(tile)
