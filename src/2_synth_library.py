@@ -16,15 +16,26 @@ parser.add_argument("--mixture_list", help="list of mixing complexity - how many
 parser.add_argument("--mixture_weights", help="wheight for every mixing complexity - For example [1, 1, 5, 1] will increase more chances to have 3-class mixtures", default = '[1, 5, 5]' )
 args = parser.parse_args()
 
+def make_array(folder):
+    files = []
+    for datei in os.listdir(folder):
+        files.append(os.path.join(folder,datei))
+    files = sorted(files)
+
+    array_list = []
+    for file in files:
+        data = np.loadtxt(file, delimiter=",")
+        array_list.append(data)
+    array = np.stack(array_list)
+    return(array)
 
 def mixing(year,model_number):
-    print(year)
     print('version ' + str(model_number))
-    x_pure_path = os.path.join(args.working_directory, '1_pure' ,f'x_{year}.npy')
-    y_pure_path = os.path.join(args.working_directory, '1_pure' , f'y_{year}.npy')
-    x_pure = np.load(x_pure_path)
+    x_pure = make_array(os.path.join(args.working_directory, '1_pure' , f'samples_x{str(args.year)}'))
     x_pure = x_pure.astype(np.float32)
-    y_pure = np.load(y_pure_path)
+    print(x_pure.shape)
+    y_pure = make_array(os.path.join(args.working_directory, '1_pure' , f'samples_y{str(args.year)}'))
+
     training_sample = int(args.lib_size)
     x_mixed = []
     y_mixed = []
@@ -45,10 +56,10 @@ def mixing(year,model_number):
         y_mixed.append(y)
     x_mixed = np.array(x_mixed, np.float32)
     y_mixed = np.array(y_mixed, np.float32)
-    if not os.path.exists(os.path.join(args.working_directory, '2_mixed_data' ,'version' +str(model_number))):
-        os.makedirs(os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number)))
-    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
-    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
+    if not os.path.exists(os.path.join(args.working_directory, '2_mixed_data3' ,'version' +str(model_number))):
+        os.makedirs(os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number)))
+    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
+    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
     print(x_mixed_out_path)
     np.save(x_mixed_out_path, arr=x_mixed)
     np.save(y_mixed_out_path, arr=y_mixed)
