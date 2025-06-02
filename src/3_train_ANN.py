@@ -90,10 +90,10 @@ def train(model_number):
     epochs = int(args.epochs)
     random.shuffle(train_index)
 
-    if not os.path.exists( os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number))):
-        os.makedirs( os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number)))
+    if not os.path.exists( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number))):
+        os.makedirs( os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number)))
 
-    with open(os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(model_number),'performance.txt'), 'w') as file:
+    with open(os.path.join(args.working_directory, '3_trained_model' ,'version' +str(model_number),'performance.txt'), 'w') as file:
         file.write(f"'Epoch'; 'MAE' \n")
 
     for e in range(epochs):
@@ -108,13 +108,13 @@ def train(model_number):
         
         print('Epoch: ', e)
         print('MAE: ', loss_train)
-        with open(os.path.join(args.working_directory, '3_trained_model_test','version' + str(model_number),'performance.txt'), 'a') as file:
+        with open(os.path.join(args.working_directory, '3_trained_model','version' + str(model_number),'performance.txt'), 'a') as file:
             file.write(f"{e};{loss_train}\n")
         random.shuffle(train_index)
         #lr *= params['LEARNING_RATE_DECAY']
         opt.learning_raye = lr
 
-    model_path = os.path.join(args.working_directory, '3_trained_model_test','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
+    model_path = os.path.join(args.working_directory, '3_trained_model','version' + str(model_number), 'saved_model'+ str(model_number)+ '.keras')
     tf.keras.models.save_model(model, model_path)
     print('Model is saved at ', model_path)
 

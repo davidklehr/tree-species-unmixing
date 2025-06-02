@@ -88,7 +88,7 @@ def predict(tile, year, model_list, no_of_tile, length):
         [cols, rows] = arr.shape
         bands = arr_in.shape[-1]
         driver = gdal.GetDriverByName("GTiff")
-        path_out = path = os.path.join(args.working_directory, '4_prediction_test', tile, 'fraction_' + year + '.tif')
+        path_out = path = os.path.join(args.working_directory, '4_prediction', tile, 'fraction_' + year + '.tif')
         print(path_out)
         outdata = driver.Create(path_out, rows, cols, bands, gdal.GDT_Byte)
         #outdata = driver.Create(path_out, rows, cols, bands, gdal.GDT_Float32)
@@ -111,7 +111,7 @@ def predict(tile, year, model_list, no_of_tile, length):
         [cols, rows] = arr.shape
         bands = arr_in.shape[-1]
         driver = gdal.GetDriverByName("GTiff")
-        path_out = path = os.path.join(args.working_directory, '4_prediction_test', tile, 'deviation_' + year + '.tif')
+        path_out = path = os.path.join(args.working_directory, '4_prediction', tile, 'deviation_' + year + '.tif')
         print(path_out)
         outdata = driver.Create(path_out, rows, cols, bands, gdal.GDT_Float32)
         outdata.SetGeoTransform(ds.GetGeoTransform())##sets same geotransform as input
@@ -132,7 +132,7 @@ def predict(tile, year, model_list, no_of_tile, length):
         arr = band.ReadAsArray()
         [cols, rows] = arr.shape
         driver = gdal.GetDriverByName("GTiff")
-        path_out = os.path.join(args.working_directory, '4_prediction_test', tile, 'classification_' + year + '.tif')
+        path_out = os.path.join(args.working_directory, '4_prediction', tile, 'classification_' + year + '.tif')
         outdata = driver.Create(path_out, rows, cols, 1, gdal.GDT_Byte)
         outdata.SetGeoTransform(ds.GetGeoTransform())##sets same geotransform as input
         outdata.SetProjection(ds.GetProjection())##sets same projection as input
@@ -150,7 +150,7 @@ def predict(tile, year, model_list, no_of_tile, length):
     if not os.path.isfile(blue_band):
         print('Not tile, skipping!')
         return
-    out_dir = os.path.join(args.working_directory, '4_prediction_test', tile)
+    out_dir = os.path.join(args.working_directory, '4_prediction', tile)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     
@@ -211,14 +211,15 @@ def predict(tile, year, model_list, no_of_tile, length):
 if __name__ == '__main__':
     
     model_list = []
-    #for i in range(args.num_models):
-    for i in [0,1,2]:
-        model_path = os.path.join(args.working_directory, '3_trained_model_test' ,'version' +str(i+1),'saved_model'+ str(i+1)+ '.keras') 
+    for i in range(args.num_models):
+    #for i in [0,1,2]:
+        model_path = os.path.join(args.working_directory, '3_trained_model' ,'version' +str(i+1),'saved_model'+ str(i+1)+ '.keras') 
         model = tf.keras.models.load_model(model_path, custom_objects={'SumToOneLayer': SumToOneLayer} )
         model_list.append(model)
 
     list_tiles = os.listdir(args.dc_folder)
-    list_tiles = ['X0055_Y0053','X0055_Y0054']
     year = int(args.year)
-    with parallel_backend('threading'):
-        Parallel(n_jobs=2)(delayed(predict)(tile, '2021', model_list, list_tiles.index(tile), len(list_tiles)) for tile in list_tiles)
+    for tile in list_tiles:
+        predict(tile, '2021', model_list, list_tiles.index(tile), len(list_tiles))
+    #with parallel_backend('threading'):
+    #    Parallel(n_jobs=2)(delayed(predict)(tile, '2021', model_list, list_tiles.index(tile), len(list_tiles)) for tile in list_tiles)
