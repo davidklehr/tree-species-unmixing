@@ -56,10 +56,10 @@ def mixing(year,model_number):
         y_mixed.append(y)
     x_mixed = np.array(x_mixed, np.float32)
     y_mixed = np.array(y_mixed, np.float32)
-    if not os.path.exists(os.path.join(args.working_directory, '2_mixed_data3' ,'version' +str(model_number))):
-        os.makedirs(os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number)))
-    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
-    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data3','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
+    if not os.path.exists(os.path.join(args.working_directory, '2_mixed_data' ,'version' +str(model_number))):
+        os.makedirs(os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number)))
+    x_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'x_mixed_' + str(year) + '.npy')
+    y_mixed_out_path = os.path.join(args.working_directory, '2_mixed_data','version' +str(model_number), 'y_mixed_' + str(year) + '.npy')
     print(x_mixed_out_path)
     np.save(x_mixed_out_path, arr=x_mixed)
     np.save(y_mixed_out_path, arr=y_mixed)
