@@ -1,0 +1,71 @@
+# ---------- Stage 1: Build Environment ----------
+FROM python:3.12-slim AS builder
+
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build dependencies and system libs
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    g++ \
+    gcc \
+    gdal-bin \
+    libgdal-dev \
+    libproj-dev \
+    libgeos-dev \
+    libspatialindex-dev \
+    libgl1 \
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set GDAL env vars
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
+    C_INCLUDE_PATH=/usr/include/gdal
+
+WORKDIR /install
+
+# Copy and filter requirements
+COPY requirements.txt .
+RUN grep -v '^python==' requirements.txt > clean_requirements.txt
+
+# Install Python dependencies into a temporary directory
+RUN pip install --prefix=/install/packages --no-cache-dir \
+    -r clean_requirements.txt
+
+# ---------- Stage 2: Runtime Environment ----------
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    CPLUS_INCLUDE_PATH=/usr/include/gdal \
+    C_INCLUDE_PATH=/usr/include/gdal
+
+# Install only runtime system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdal-bin \
+    libgdal-dev \
+    libproj-dev \
+    libgeos-dev \
+    libspatialindex-dev \
+    libgl1 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy Python packages from builder
+COPY --from=builder /install/packages /usr/local
+
+# Strip native binaries (optional but useful)
+RUN find /usr/local -type f -executable -exec strip --strip-unneeded {} + || true
+
+# Set working directory and add app
+WORKDIR /app
+COPY . .
+
+# Ensure scripts are executable
+RUN find . -name "*.py" -exec chmod +x {} \;
+
+# Add app src to PATH
+ENV PATH="/app/src:$PATH"
+
+# Default command
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["1_extract_pure.py"]
