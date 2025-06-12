@@ -10,7 +10,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--dc_folder", help="path to the spline data-cube", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/spline/thermal_time_training_points" )
 parser.add_argument("--training_points", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/INTERNAL/BWI4/all_trainings_points.gpkg")
-parser.add_argument("--year", help="path to the file of the training points geopackage", default= 2021)
+parser.add_argument("--year", help="path to the file of the training points geopackage", default= '2021')
 parser.add_argument("--working_directory", help="path to the file of the training points geopackage", default= "/data/ahsoka/eocp/forestpulse/01_data/02_processed_data/Synth_Mix/2021_ThermalTime")
 args = parser.parse_args()
 
@@ -21,7 +21,7 @@ def extract_points(tile):
     for band in bands:
         band_paths =[]
         for datei in os.listdir(dc_path):
-            if ('_'+band+'_' in datei) and datei.endswith('.tif'):
+            if (str(int(args.year)-2)+f'-{args.year}' in datei ) and ('_'+band+'_' in datei) and datei.endswith('.tif'):
                 path = os.path.join(dc_path, datei)
                 band_paths.append(path)   
         band_paths = sorted(band_paths)
@@ -68,4 +68,5 @@ if __name__ == '__main__':
         os.makedirs(os.path.join(args.working_directory, '1_pure', f'samples_x{str(args.year)}'))
     if not os.path.exists(os.path.join(args.working_directory, '1_pure', f'samples_y{str(args.year)}')):
         os.makedirs(os.path.join(args.working_directory, '1_pure', f'samples_y{str(args.year)}'))
+    tile = 'X0055_Y0053'
     extract_points(tile)
