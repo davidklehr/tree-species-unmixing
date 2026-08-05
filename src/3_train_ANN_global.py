@@ -190,6 +190,5 @@ def plot():
 
 if __name__ == '__main__':
     num_workers = 10
-    ####Parallel(n_jobs=num_workers, backend="loky")(delayed(train)(i+1, (i%num_workers)*2) for i in range(int(args.num_models)))
-    Parallel(n_jobs=num_workers, backend="loky")(delayed(train)(i+1+10, i) for i in range(int(args.num_models)))
+    Parallel(n_jobs=num_workers, backend="loky")(delayed(train)(i+1, i) for i in range(int(args.num_models)))
     plot()

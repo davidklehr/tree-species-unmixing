@@ -105,8 +105,7 @@ def mixing(year,model_number):
     #                   store the mixed data
     #------------------------------------------------------------
 
-    if not os.path.exists(os.path.join(args.working_directory, args.year, '2_mixed_data_glob' ,'version' +str(model_number))):
-        os.makedirs(os.path.join(args.working_directory, args.year, '2_mixed_data_glob','version' +str(model_number)))
+    os.makedirs(os.path.join(args.working_directory, args.year, '2_mixed_data_glob','version' +str(model_number)), exist_ok=True)
     x_mixed_out_path = os.path.join(args.working_directory, args.year, '2_mixed_data_glob','version' +str(model_number), 'x_mixed_' + str(year) + '.npz')
     y_mixed_out_path = os.path.join(args.working_directory, args.year, '2_mixed_data_glob','version' +str(model_number), 'y_mixed_' + str(year) + '.npz')
     np.savez_compressed(x_mixed_out_path, x_mixed=x_mixed)
